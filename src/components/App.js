@@ -18,13 +18,26 @@ class App extends React.Component {
     fishes[`fish${Date.now()}`] = fish;
     // 3. Set the new fishes object to state
     this.setState({ fishes });
-    // with ES6, the above is the same as writing line 21 bc 
-    // the property in state matches variable in method
+    // with ES6, the above step 3 is the same as writing line 23
+    // below  bc the property in state matches variable in method
     // this.setState({ fishes: fishes });
   };
 
   loadSampleFishes = fishes => {
+    // 1. Add pre-defined list sample-fishes.js to state
     this.setState({ fishes: sampleFishes });
+  }
+
+  addToOrder = key => {
+    // 1. Take a copy of state
+    const order = { ...this.state.order };
+    // 2. Either add to order, or update the number in our order
+    order[key] = order[key] + 1 || 1;
+    // 3. Call setState to update our state object
+    this.setState({order}); 
+    // with ES6, the above step 3 is the same as writing line 40 
+    // below bc the property in state matches variable in method
+    // this.setState({ order: order });
   }
 
   render() {
@@ -34,7 +47,7 @@ class App extends React.Component {
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">
             {Object.keys(this.state.fishes).map(key => (
-              <Fish key={key} details={this.state.fishes[key]} />
+              <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
               ))}
           </ul>
         </div>
