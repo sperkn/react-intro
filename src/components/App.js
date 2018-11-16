@@ -22,7 +22,7 @@ class App extends React.Component {
     }
 
     this.ref = base.syncState(`${params.storeId}/fishes`, {
-      context: this, 
+      context: this,
       state: "fishes"
     });
   }
@@ -48,10 +48,19 @@ class App extends React.Component {
     // this.setState({ fishes: fishes });
   };
 
+  updateFish = (key, updatedFish) => {
+    // 1. Take a copy of the current state
+    const fishes = this.state.fishes;
+    // 2. Update that state
+    fishes[key] = updatedFish;
+    // 3. Set that to state
+    this.setState({ fishes });
+  };
+
   loadSampleFishes = fishes => {
     // 1. Add pre-defined list sample-fishes.js to state
     this.setState({ fishes: sampleFishes });
-  }
+  };
 
   addToOrder = key => {
     // 1. Take a copy of state
@@ -59,11 +68,11 @@ class App extends React.Component {
     // 2. Either add to order, or update the number in our order
     order[key] = order[key] + 1 || 1;
     // 3. Call setState to update our state object
-    this.setState({order}); 
-    // with ES6, the above step 3 is the same as writing line 40 
+    this.setState({ order });
+    // with ES6, the above step 3 is the same as writing line 40
     // below bc the property in state matches variable in method
     // this.setState({ order: order });
-  }
+  };
 
   render() {
     return (
@@ -72,12 +81,22 @@ class App extends React.Component {
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">
             {Object.keys(this.state.fishes).map(key => (
-              <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
-              ))}
+              <Fish
+                key={key}
+                index={key}
+                details={this.state.fishes[key]}
+                addToOrder={this.addToOrder}
+              />
+            ))}
           </ul>
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} />
-        <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} />
+        <Inventory
+          fishes={this.state.fishes}
+          addFish={this.addFish}
+          updateFish={this.updateFish}
+          loadSampleFishes={this.loadSampleFishes}
+        />
       </div>
     );
   }
