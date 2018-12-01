@@ -43,7 +43,7 @@ class App extends React.Component {
     fishes[`fish${Date.now()}`] = fish;
     // 3. Set the new fishes object to state
     this.setState({ fishes });
-    // with ES6, the above step 3 is the same as writing line 23
+    // with ES6, the above step 3 is the same as writing line 48
     // below  bc the property in state matches variable in method
     // this.setState({ fishes: fishes });
   };
@@ -54,6 +54,15 @@ class App extends React.Component {
     // 2. Update that state
     fishes[key] = updatedFish;
     // 3. Set that to state
+    this.setState({ fishes });
+  };
+
+  deleteFish = (key) => {
+    // 1. Take a copy of state
+    const fishes = { ...this.state.fishes };
+    // 2. update the state
+    fishes[key] = null;
+    // 3. update state
     this.setState({ fishes });
   };
 
@@ -74,6 +83,15 @@ class App extends React.Component {
     // this.setState({ order: order });
   };
 
+  removeFromOrder = (key) => {
+    // 1. Take a copy of state
+    const order = { ...this.state.order };
+    // 2. Remove that item from order (order not mirrored to Firebase, so can use delete)
+    delete order[key];
+    // 3. update state
+    this.setState({ order });
+  };
+
   render() {
     return (
       <div className="catch-of-the-day">
@@ -90,11 +108,12 @@ class App extends React.Component {
             ))}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder} />
         <Inventory
           fishes={this.state.fishes}
           addFish={this.addFish}
           updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes}
         />
       </div>
