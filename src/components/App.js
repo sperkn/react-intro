@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Header from "./Header";
 import Order from "./Order";
 import Inventory from "./Inventory";
@@ -10,6 +11,10 @@ class App extends React.Component {
   state = {
     fishes: {},
     order: {}
+  };
+
+  static propTypes = {
+    match: PropTypes.object
   };
 
   componentDidMount() {
@@ -57,7 +62,7 @@ class App extends React.Component {
     this.setState({ fishes });
   };
 
-  deleteFish = (key) => {
+  deleteFish = key => {
     // 1. Take a copy of state
     const fishes = { ...this.state.fishes };
     // 2. update the state
@@ -83,7 +88,7 @@ class App extends React.Component {
     // this.setState({ order: order });
   };
 
-  removeFromOrder = (key) => {
+  removeFromOrder = key => {
     // 1. Take a copy of state
     const order = { ...this.state.order };
     // 2. Remove that item from order (order not mirrored to Firebase, so can use delete)
@@ -108,7 +113,11 @@ class App extends React.Component {
             ))}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder} />
+        <Order
+          fishes={this.state.fishes}
+          order={this.state.order}
+          removeFromOrder={this.removeFromOrder}
+        />
         <Inventory
           fishes={this.state.fishes}
           addFish={this.addFish}
